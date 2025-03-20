@@ -1,0 +1,3 @@
+El programa debe abrir el fichero indicado en la línea de comandos (consultar optind en la página de manual de getopt) y después situar el marcador de posición en la posición correcta antes de leer. Para ello haremos uso de la llamada al sistema lseek (consultar la página de manual). Si el usuario ha usado el flag -e debemos situar el marcador N bytes antes del final del fichero. Si el usuario no ha usado el flag -e debemos avanzar el marcador N bytes desde el comienzo del fichero.
+
+Una vez situado el marcador de posición, debemos leer byte a byte hasta el final de fichero, escribiendo cada byte leído por la salida estándar (descriptor 1).
