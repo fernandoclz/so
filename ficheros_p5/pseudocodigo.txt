@@ -1,0 +1,40 @@
+int turno_actual_vip=0;
+int turno_actual=0;
+int dispensador_turnos=0;
+int dispensador_turnos_vip=0;
+mutex m;
+
+/* Completar con variables/recursos necesarios */
+
+int vips_esperando=0;
+int clientes_dentro=0;
+cond espera;
+cond espera_vip;
+
+
+void enter_vip_client()
+{	
+   /* Completar */
+   lock();
+    
+   unlock();
+}
+
+void enter_normal_client(){	
+   /* Completar */
+   lock()
+   
+   unlock();
+}
+
+
+void exit_client(){	
+   /* Completar */
+   lock();
+   clientes_dentro--;
+   if(vips_esperando > 0)
+      cond_broadcast(espera_vip);
+   else
+      cond_broadcast(espera);
+   unlock;
+}
