@@ -227,6 +227,7 @@ int main(int argc, char *argv[])
     int isB = FALSE;
     int isS = FALSE;
     int isI = FALSE;
+    int isBMayus = FALSE;
 
     if (argc < 2)
     {
@@ -234,7 +235,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    while ((opt = getopt(argc, argv, "x:s:bi")) != -1)
+    while ((opt = getopt(argc, argv, "x:s:biB")) != -1)
     {
         switch (opt)
         {
@@ -256,6 +257,9 @@ int main(int argc, char *argv[])
             break;
         case 'b':
             isB = TRUE;
+            continue;
+        case 'B':
+            isBMayus = TRUE;
         default:
             break;
         }
@@ -263,7 +267,7 @@ int main(int argc, char *argv[])
 
     if (isI)
     {
-        ejercicio2A();
+        ejercicio2A(isBMayus);
     }
 
     if (isS)

@@ -52,12 +52,6 @@ void enter_normal_client(int id) {
     clientes_dentro++;        // Incrementa los clientes dentro
     printf("Client %2d (not vip) entered. Occupancy %d\n", id, clientes_dentro);
 
-    if (vips_esperando > 0) {
-        pthread_cond_broadcast(&espera_vip); // Despierta a todos los VIPs en espera
-    } else if (clientes_esperando > 0) {
-        pthread_cond_broadcast(&espera);    // Despierta a los clientes normales en espera
-    }
-
     pthread_mutex_unlock(&m); // Libera el mutex
 }
 
@@ -82,12 +76,6 @@ void enter_vip_client(int id) {
     vips_esperando--;         // Disminuye los VIPs en espera
     clientes_dentro++;        // Incrementa los clientes dentro
     printf("Client %2d (  vip  ) entered. Occupancy %d.\n", id, clientes_dentro);
-
-    if (vips_esperando > 0) {
-        pthread_cond_broadcast(&espera_vip); // Despierta a todos los VIPs en espera
-    } else if (clientes_esperando > 0) {
-        pthread_cond_broadcast(&espera);    // Despierta a los clientes normales en espera
-    }
 
     pthread_mutex_unlock(&m); // Libera el mutex
 }
