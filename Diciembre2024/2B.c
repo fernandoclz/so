@@ -24,6 +24,18 @@ pid_t launch_command(char **argv)
     return PID;
 }
 
+pid_t launch_shell_command(char* cmd){
+    pid_t PID = fork();
+    if(PID == 0){
+        if(execl("/bin/bash", "bash", "-c", cmd, NULL) == -1){
+            perror("execl");
+            exit(EXIT_FAILURE);
+        }
+        exit(1);
+    }
+    return PID;
+}
+
 void leerFichero(char *f)
 {
     FILE *file;
@@ -180,7 +192,7 @@ char **parse_command(const char *cmd, int *argc)
     return argv;
 }
 
-void ejercicio2A()
+void ejercicio2B(int bash)
 {
     int salir = FALSE;
 
@@ -205,16 +217,24 @@ void ejercicio2A()
             continue;
         }
 
-        char **cmd_argv;
-        int cmd_argc;
-        cmd_argv = parse_command(buffer, &cmd_argc);
-        pid_t pid = launch_command(cmd_argv);
-        waitpid(pid, NULL, 0);
-        for (int i = 0; cmd_argv[i] != NULL; i++)
+        if (bash == TRUE)
         {
-            free(cmd_argv[i]);
+            pid_t pid = launch_shell_command(buffer);
+            waitpid(pid, NULL, 0);
         }
-        free(cmd_argv);
+        else
+        {
+            char **cmd_argv;
+            int cmd_argc;
+            cmd_argv = parse_command(buffer, &cmd_argc);
+            pid_t pid = launch_command(cmd_argv);
+            waitpid(pid, NULL, 0);
+            for (int i = 0; cmd_argv[i] != NULL; i++)
+            {
+                free(cmd_argv[i]);
+            }
+            free(cmd_argv);
+        }
     }
 }
 
@@ -234,7 +254,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    while ((opt = getopt(argc, argv, "x:s:bi")) != -1)
+    while ((opt = getopt(argc, argv, "x:s:biB")) != -1)
     {
         switch (opt)
         {
@@ -254,8 +274,12 @@ int main(int argc, char *argv[])
         case 'i':
             isI = TRUE;
             break;
+        case 'B':
+            isB = TRUE;
+            continue;
         case 'b':
             isB = TRUE;
+            continue;
         default:
             break;
         }
@@ -263,7 +287,7 @@ int main(int argc, char *argv[])
 
     if (isI)
     {
-        ejercicio2A();
+        ejercicio2B(isB);
     }
 
     if (isS)
